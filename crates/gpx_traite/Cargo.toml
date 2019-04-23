@@ -1,0 +1,16 @@
+[package]
+name = "gpx_traite"
+version = "0.1.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+helix = "0.7.5"
+quick-xml = "0.13.3"
+serde = "*"
+serde_json = "*"
+serde_derive = "*"
+regex = "1"
+chrono = "0.4"
+

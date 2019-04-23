@@ -1,0 +1,25 @@
+%nav.navbar.navbar-expand-sm.navbar-dark.bg-dark.sticky-top
+  %button.navbar-toggler{'aria-controls': 'navbarSupportedContent',
+                         'aria-expanded': 'false',
+                         'aria-label': 'Toggle navigation',
+                         'data-target': '#navbarSupportedContent',
+                         'data-toggle': 'collapse',
+                         type: 'button'}
+    %span.navbar-toggler-icon
+  .container
+    =link_to 'monSaintMoi', root_path, {class: 'navbar-brand'}
+    #navbarSupportedContent.collapse.navbar-collapse
+      %ul.navbar-nav.mt-1.mx-auto
+        %li.nav-item{class: "#{'active' if session[:menu] == 'A propos'}"}
+          =link_to 'A propos', apropos_path, {class: 'nav-link'}
+        %li.nav-item{class: "#{'active' if session[:menu] == 'Randos'}"}
+          =link_to 'Randos', randonnees_path, {class: 'nav-link'}
+        %li.nav-item{class: "#{'active' if session[:menu] == 'Treks'}"}
+          =link_to 'Treks', treks_path, {class: 'nav-link'}
+        %li.nav-item{class: "#{'active' if session[:menu] == 'Matériels'}"}
+          =link_to 'Matériels', materiels_path, {class: 'nav-link'}
+        %li.nav-item{class: "#{'active' if session[:menu] == 'Dans les jours qui viennent'}"}
+          =link_to 'Dans les jours qui viennent', agenda_path, {class: 'nav-link'}
+      -#%form.form-inline.my-2.my-lg-0
+      -#  %input.form-control.mr-sm-2{placeholder: 'Recherche', type: 'text'}/
+      -#  %button.btn.btn-outline-success.my-2.my-sm-0{type: 'submit'} Recherche

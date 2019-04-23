@@ -1,0 +1,25 @@
+.container.mt-3
+  %p#notice= notice
+  - if session[:admin]
+    =link_to '', @materiel, method: :delete,
+      type: 'button', class: 'btn btn-link fa fa-trash',  data: { confirm: 'Êtes-vous sûr ?' }
+    =link_to '', edit_materiel_path(@materiel),
+      type: 'button', class: 'btn btn-link fa fa-pencil'
+  .col-md-12.mt-2
+    .card
+      .card-block
+        -if @materiel.reforme
+          %h3.card-title(style="text-decoration: line-through; color: red")
+            =@materiel.nom
+        -else
+          %h3.card-title
+            =@materiel.nom
+      %h6.card-subtitle.ml-4.mb-3
+        =@materiel.poids
+        g
+      .row
+        %div.col-md-3.child
+          =image_tag(File.join('/materiels',@materiel.photo), :class => 'card-img-top img-fluid',
+           :alt => @materiel.nom)
+      .card-block
+        =@materiel.description.html_safe

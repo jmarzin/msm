@@ -1,0 +1,33 @@
+=image_tag('saintjacques.jpg', class: 'img-fluid rounded mb-3 mb-md-0',
+ :alt => 'Saint-Jacques de Compostelle')
+.container
+  %p#notice= notice
+  .row
+    .col-md-6.mb-4
+      .card.h-100
+        %h4.card-header Petit départ
+        .card-block
+          %h1.card-text
+            %em
+              Ça c'est fait !
+        .card-footer
+          %p
+            %button.btn-primary{'data-content': "C'est le temps qui me sépare de mon départ en retraite !",
+             'data-toggle': 'popover', nom: 'Explication', type: 'button'} En savoir plus
+    .col-md-6.mb-4
+      .card.h-100
+        %h4.card-header Grand départ
+        .card-block
+          - if Date.new(2019, 05, 11) > Date.today
+            <iframe width="100%" height="400px" src="https://www.watchisup.fr/compte-a-rebours/embed/2019-05-11-08-00?backgroundcolor=&color=" frameborder="0" allowfullscreen></iframe>
+          - else
+            %h1.card-text
+              %em C'est parti...
+        .card-footer
+          %p
+            %button.btn-primary{'data-content': "C'est le temps qui me sépare de mon départ pour Saint-Jacques !",
+             'data-toggle' => 'popover', nom: 'Explication', type: 'button'} En savoir plus
+:javascript
+  $(document).ready(function(){
+    $('[data-toggle="popover"]').popover();
+  });

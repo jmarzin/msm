@@ -1,0 +1,122 @@
+.container.mt-3
+  %p#notice= notice
+  - if session[:admin]
+    =link_to '', @trace, method: :delete, type: 'button', class: 'btn btn-link fa fa-trash',
+      :data => { :confirm => 'Supprimer ?' }
+    - if @trace.is_a? Randonnee
+      =link_to '', edit_randonnee_path(@trace),
+        type: 'button', class: 'btn btn-link fa fa-pencil'
+    - else
+      =link_to '', edit_trek_path(@trace),
+        type: 'button', class: 'btn btn-link fa fa-pencil'
+  %h2.text-center
+    =@trace.titre
+  %h3.text-center
+    =@trace.sous_titre
+  -if @trace.moyen=='V'
+    %i.fa.fa-bicycle
+  -else
+    %i.fa.fa-male
+  .row
+    .col-md-4
+      - if @trace.heure_debut.nil?
+        Date et heure de départ inconnues
+      - else
+        Départ le #{l(@trace.heure_debut.localtime, format: '%a %-d %b %Y à %Hh%M')}
+    .col-md-2
+      %i.fa.fa-arrow-right
+      -if !@trace.distance_totale.blank?
+        =number_with_delimiter(@trace.distance_totale, :delimiter => ' ') + ' m'
+    .col-md-3
+      Altitude minimum &nbsp:
+      -if !@trace.altitude_minimum.blank?
+        =number_with_delimiter(@trace.altitude_minimum, :delimiter => ' ') + ' m'
+    .col-md-3
+      %i.fa.fa-arrow-up
+      -if !@trace.ascension_totale.blank?
+        =number_with_delimiter(@trace.ascension_totale, :delimiter => ' ') + ' m'
+  .row
+    .col-md-4
+      - if @trace.heure_fin.nil?
+        Date et heure d'arrivée inconnues
+      - else
+        Arrivée le #{l(@trace.heure_fin.localtime, format: '%a %-d %b %Y à %Hh%M')}
+    .col-md-2
+    .col-md-3
+      Altitude maximum :
+      -if !@trace.altitude_maximum.blank?
+        =number_with_delimiter(@trace.altitude_maximum, :delimiter => ' ') + ' m'
+    .col-md-3
+      %i.fa.fa-arrow-down
+      -if !@trace.descente_totale.blank?
+        =number_with_delimiter(@trace.descente_totale, :delimiter => ' ') + ' m'
+  - if !@photos.empty?
+    %button.btn.btn-primary.fa.fa-camera-retro{ type: 'button',
+    'data-toggle': 'modal',  'data-target': '#photosModal', title: 'Voir les photos' }
+    #photosModal.modal.fade(role="dialog")
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-body
+            .container-fluid
+              #monCarousel.carousel.slide(data-ride="carousel")
+                -#%ol.carousel-indicators
+                -#  -@photos.each_index do |i|
+                -#    %li{ :class => i == 0 ? 'active' : '',
+                -#     'data-target': '#monCarousel', 'data-slide-to': "#{i}" }
+                .carousel-inner
+                  -@photos.each_with_index do |p, i|
+                    .carousel-item{ :class => i == 0 ? 'active' : '' }
+                      -if File.basename(p)[-1] == '4'
+                        =video_tag p, class: 'd-block img-fluid', controls: true, autoplay: true, loop: true
+                      -else
+                        =image_tag p, class: 'd-block img-fluid',  alt: File.basename(p)
+                %a.carousel-control-prev(href="#monCarousel" role="button" data-slide="prev")
+                  %span.carousel-control-prev-icon(aria-hidden="true")
+                  %span.sr-only <
+                %a.carousel-control-next(href="#monCarousel" role="button" data-slide="next")
+                  %span.carousel-control-next-icon(aria-hidden="true")
+                  %span.sr-only >
+  -if @trace.respond_to? :trek
+    -if !@trace.trek.nil?
+      =link_to 'Voir le trek', @trace.trek, class: 'btn btn-primary'
+  -else
+    -if !@trace.randonnees.nil?
+      =link_to 'Voir les étapes', randonnees_trek_page_path(@trace, 1), class: 'btn btn-primary'
+  - if !@trace.materiels.empty?
+    =link_to 'Voir les matériels emportés', materiels_traces_url(@trace), class: 'btn btn-primary'
+  - if !@trace.fichier_gpx.blank?
+    %button.btn.btn-primary.fa.fa-line-chart{ type: 'button', 'data-toggle': 'modal',
+      'data-target': '#profilModal', title: 'Voir le profil' }
+    #profilModal.modal.fade(role="dialog")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %h4.modal-title.align-self-center Profil
+            %button.close{:type => 'button', :'data-dismiss' => 'modal' } &times;
+          .modal-body
+            .container-fluid
+              .row
+                %svg{ :height => '100%', :width => '100%', :viewBox => '0 0 2000 1000',
+                  :preserveAspectRatio => 'xMidYMid meet' }
+                  -@profils.each do |p|
+                    %polyline{ :points => p, :style => 'fill: none;stroke: #f00;stroke-width: 8' }
+          .modal-footer
+            %button.btn.btn-default{:type => 'button', :'data-dismiss' => 'modal' } Close
+    #mapid
+
+  =@trace.description.html_safe
+  %br
+  - if !@photos.empty?
+    %button.btn.btn-primary.fa.fa-camera-retro{ :type => 'button',
+    :'data-toggle' => 'modal',  :'data-target' => '#photosModal', :title => 'Voir les photos' }
+  -if @trace.respond_to? :trek
+    -if !@trace.trek.nil?
+      =link_to 'Voir le trek', @trace.trek, class: 'btn btn-primary'
+  -else
+    -if !@trace.randonnees.nil?
+      =link_to 'Voir les étapes', randonnees_trek_page_path(@trace, 1), class: 'btn btn-primary'
+  - if !@trace.materiels.empty?
+    =link_to 'Voir les matériels emportés', materiels_traces_url(@trace), class: 'btn btn-primary'
+  - if !@trace.fichier_gpx.blank?
+    %button.btn.btn-primary.fa.fa-line-chart{ :type => 'button',
+      :'data-toggle' => 'modal',  :'data-target' => '#profilModal', :title => 'Voir le profil' }

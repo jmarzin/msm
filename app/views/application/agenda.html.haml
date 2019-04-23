@@ -1,0 +1,5 @@
+.container.mt-3
+  - if session[:admin]
+    =link_to '', agenda_edit_path,
+        type: 'button', class: 'btn btn-link fa fa-pencil'
+  =@agenda.html_safe

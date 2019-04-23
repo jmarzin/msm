@@ -1,0 +1,5 @@
+= render 'traces/show'
+-if !@trace.fichier_gpx.blank?
+  %script
+    afficheCarte('mapid', "#{File.join('/gpx', 'randos', @trace.fichier_gpx)}",
+    '#{@trace.lat_depart},#{@trace.long_depart}', '#{@trace.lat_arrivee},#{@trace.long_arrivee}')

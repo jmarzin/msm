@@ -1,0 +1,27 @@
+.row
+  -@traces.each do |trace|
+    .col-md-4.child
+      .card.text-center
+        .card-block
+          %h3.card-title #{trace.titre}
+          %h6.card-subtitle.mb-3
+            %small #{trace.sous_titre}
+          .card-text
+            .mapidL{ id: "mapid#{trace.id}" }
+          %p
+            -if trace.moyen=='V'
+              %i.fa.fa-bicycle
+            -else
+              %i.fa.fa-male
+            %i.fa.fa-arrow-right
+            #{trace.distance_totale.to_f/1000} km
+            %i.fa.fa-arrow-up
+            #{trace.ascension_totale} m
+            %i.fa.fa-arrow-down
+            #{trace.descente_totale}  m
+            %br
+            -if !trace.heure_debut.nil?
+              le #{l(trace.heure_debut.localtime, format: '%a %-d %b %Y')}
+            -else
+              date et heure inconnues
+          =link_to 'En savoir plus', trace, class: 'btn btn-primary'

@@ -1,0 +1,28 @@
+.container.mt-3
+  %p#notice= notice
+  - if session[:admin]
+    =link_to '', new_trek_path, class: 'btn btn-link fa fa-plus'
+  - if @nb_pages > 1
+    %nav
+      %ul.pagination.pagination-sm.justify-content-center
+        %li.page-item{ :class => (@page_a_afficher == 1) ? 'disabled' : '' }
+          %a.page-link{ :href =>  treks_page_path(@page_a_afficher - 1), :tabindex => '-1' }
+            Précédent
+        - (1..@nb_pages).each do |i|
+          - if i == @page_a_afficher
+            %li.page-item.active
+              %a.page-link(href="#")
+                =i
+                %span.sr-only (current)
+          - else
+            %li.page-item
+              %a.page-link{ :href => treks_page_path(i) } #{i}
+        %li.page-item{ :class => (@page_a_afficher == @nb_pages) ? 'disabled' : '' }
+          %a.page-link{ :href => treks_page_path(@page_a_afficher + 1), :tabindex => '+1' }
+            Suivant
+  =render 'traces/index'
+  -for trace in @traces
+    -if !trace.fichier_gpx.blank?
+      %script
+        afficheCarte("mapid#{trace.id}", "#{File.join('/gpx', 'treks', trace.fichier_gpx)}",
+        "#{trace.lat_depart},#{trace.long_depart}", "#{trace.lat_arrivee},#{trace.long_arrivee}")

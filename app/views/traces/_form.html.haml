@@ -1,0 +1,116 @@
+.container.mt-3
+  = form_for @trace, :html => { :multipart => true } do |f|
+    - if @trace.errors.any?
+      #error_explanation
+        %h2
+          = "#{pluralize(@trace.errors.count, 'erreur')}"
+          , la trace ne peut pas être enregistrée :
+        %ul
+          - @trace.errors.full_messages.each do |message|
+            %li= message
+    -if @garder_points
+      = f.hidden_field :polylines
+      = f.fields_for :points  do |f_points|
+        = f_points.hidden_field :distance
+        = f_points.hidden_field :altitude
+
+    .field
+      = f.label :titre
+      = f.text_field :titre
+    .field
+      = f.label :sous_titre
+      = f.text_field :sous_titre
+    .field
+      = f.label :moyen
+      = f.select :moyen, options_for_select([['A pied', 'P'], ['En vélo', 'V']], @trace.moyen)
+    .field
+      = f.label :description
+      = f.text_area :description, :class => 'tinymce', :rows => 10, :cols => 80,
+       :id => 'mytextarea'
+    .field
+      -@gpx_avant.each do |gpx|
+        %input{ :type => 'hidden', :name => 'gpx_avant[]', :value => gpx }
+      -if @trace.is_a? Randonnee
+        = f.label :fichier_gpx
+        = f.select :fichier_gpx,
+         options_for_select(@gpx_candidats.map { |g| [g, g]}, @trace.fichier_gpx),
+         include_blank: :true
+        %button.btn.btn-info{ type: 'button', 'data-toggle': 'modal',  'data-target': '#mapModal', onClick: 'afficheMap();' } Voir la trace
+        .mapid
+        .field
+          = f.label :nouveau_fichier_gpx
+          = f.file_field :nouveau_fichier_gpx, accept: '.gpx'
+      -else
+        = f.hidden_field :fichier_gpx
+        = f.label :randonnees_ids, 'Randonnées incluses'
+        %ul.list-unstyled
+          = f.collection_check_boxes :randonnee_ids,
+            (@trace.randonnees + @gpx_candidats).uniq.sort { |x, y| x.fichier_gpx <=> y.fichier_gpx },
+            :id, :fichier_titre do |b|
+            %li
+              =b.check_box
+              =b.label
+    .field
+      = f.label :altitude_minimum
+      = f.number_field :altitude_minimum
+    .field
+      = f.label :altitude_maximum
+      = f.number_field :altitude_maximum
+    .field
+      = f.label :ascension_totale
+      = f.number_field :ascension_totale
+    .field
+      = f.label :descente_totale
+      = f.number_field :descente_totale
+    .field
+      = f.label :heure_debut
+      = f.datetime_select :heure_debut, default: 12.hours.ago
+    .field
+      = f.label :heure_fin
+      = f.datetime_select :heure_fin, default: 1.hour.ago
+    .field
+      = f.label :distance_totale_en_mètres
+      = f.number_field :distance_totale
+    .field
+      = f.label :lat_depart
+      = f.text_field :lat_depart
+    .field
+      = f.label :long_depart
+      = f.text_field :long_depart
+    .field
+      = f.label :lat_arrivee
+      = f.text_field :lat_arrivee
+    .field
+      = f.label :long_arrivee
+      = f.text_field :long_arrivee
+    .field
+      = f.label :repertoire_photos
+      = f.select :repertoire_photos,
+        options_for_select(@rep_photos_candidats.map { |r| [r, r] }, @trace.repertoire_photos),
+          {include_blank: :true}, {:onChange => 'changerep();'}
+      = link_to 'Nombre de photos ?', photos_number_path(@trace.repertoire_photos), id: 'bouton',remote: true, class: 'btn-info'
+      %strong#res
+    .field
+      =label_tag :creer_rep_photos, 'Répertoire à créer'
+      =text_field_tag :creer_rep_photos
+    .field
+      =label_tag :upload_photos, 'Photos à télécharger'
+      =file_field_tag 'upload_photos[]', accept: '.jpg', multiple: true
+    .field
+      = f.label :materiels_ids, 'Matériels emportés'
+      %ul.list-unstyled
+        = f.collection_check_boxes :materiel_ids,
+          (@trace.materiels + Materiel.where(:reforme => false).order(poids: :desc)).uniq,
+          :id, :nom_poids_et_reforme do |b|
+          %li
+            =b.check_box
+            =b.label
+    .field
+      = f.hidden_field :type, :value => @trace.type
+    .actions
+      = f.submit f.object.new_record? ? 'Créer' : 'Mettre à jour', :class => 'btn-primary'
+
+:javascript
+  $(document).ready(function(){
+    editeur();
+  });

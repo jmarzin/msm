@@ -1,0 +1,33 @@
+%p#notice= notice
+.container
+  -if @affiche_poids
+    %h3.mt-2
+      Poids total du sac :
+      =@materiels.select { |m| !m.reforme }.map { |m| m.poids }.reduce(:+)
+      g
+  -if session['admin']
+    =link_to '', new_materiel_path,
+      type: 'button', class: 'btn btn-link fa fa-plus'
+  .row
+    -@materiels.each do |materiel|
+      .col-md-4.child
+        .card.text-center
+          .card-block
+            -if materiel.reforme
+              %h3.card-title(style="text-decoration: line-through; color: red")
+                =materiel.nom
+            -else
+              %h3.card-title
+                =materiel.nom
+          %h6.card-subtitle.mb-3
+            =materiel.poids
+            g
+          .row(style="height: 100px;")
+            .col-md-3.child
+            .col-md-6.child
+              =image_tag(File.join('/materiels',materiel.photo), :class => 'card-img-top img-fluid',
+                :alt => materiel.nom, :style => 'max-height: 100px; width: auto')
+          .card-block
+            %p.card-text(style="height: 100px;")
+              =materiel.description_courte
+            =link_to 'En savoir plus', materiel, type: 'button', class: 'btn btn-primary'

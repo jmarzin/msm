@@ -1,0 +1,22 @@
+!!!
+%html
+  %head
+    %meta{content: 'text/html; charset=UTF-8', 'http-equiv': 'Content-Type'}
+    %meta{name: 'viewport', content: 'width=device-width, initial-scale=1'}
+    %title Appli
+    = csrf_meta_tags
+    %link{crossorigin: '', href: 'https://unpkg.com/leaflet@1.2.0/dist/leaflet.css',
+     integrity: 'sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==',
+     rel: 'stylesheet'}/
+    %link{href: 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css', rel: 'stylesheet',
+     media: 'all'}/
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    %script{type: 'text/javascript', crossorigin: '',
+      integrity: 'sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==',
+      src: 'https://unpkg.com/leaflet@1.2.0/dist/leaflet.js'}
+    =javascript_include_tag 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'
+    =javascript_include_tag 'https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'
+    =javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body
+    = render 'layouts/menu'
+    = yield

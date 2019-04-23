@@ -18,14 +18,18 @@ gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'mini_racer', platforms: :ruby
 #Use tinymce
-gem 'tinymce-rails'
+gem 'tinymce-rails', '~> 4.7.9'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Use FontAwesome
 gem 'font-awesome-sass', '~> 4.7.0'
 # Use Haml
 gem 'haml-rails', '~> 1.0'
-gem 'bootstrap', '~> 4.0.0.beta2'
+
+gem 'helix-rails'
+
+# Use bootstrap
+gem 'bootstrap', '~> 4.3.1'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Use bootstrap
@@ -77,3 +81,5 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'gpx_traite', path: 'crates/gpx_traite'

@@ -23,16 +23,16 @@ default: &default
 
 development:
   <<: *default
-  database: msm_development
+  database: msmrubydev
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user that initialized the database.
-  #username: msm
+  username: postgres
 
   # The password associated with the postgres role (username).
-  #password:
+  password: 51julie2
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -58,6 +58,8 @@ development:
 test:
   <<: *default
   database: msm_test
+  username: postgres
+  password: 51julie2
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -79,7 +81,10 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: msm_production
-  username: msm
-  password: <%= ENV['MSM_DATABASE_PASSWORD'] %>
+  host: localhost
+  adapter: postgresql
+  encoding: utf8
+  database: msm
+  pool: 5
+  username: <%= ENV['msm_DATABASE_USER'] %>
+  password: <%= ENV['msm_DATABASE_PASSWORD'] %>
