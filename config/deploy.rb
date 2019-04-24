@@ -36,8 +36,7 @@ set :format, :pretty
 # set :linked_files, %w{config/database.yml}
 # set :linked_dirs,  %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 #
-set :linked_files, %w{config/master.key}
-set :linked_files, %w{config/database.yml public/agenda.txt}
+set :linked_files, %w{config/master.key config/database.yml public/agenda.txt}
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/assets public/system public/images public/gpx public/materiels}
 
 namespace :puma do
