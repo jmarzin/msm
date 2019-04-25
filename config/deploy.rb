@@ -1,5 +1,5 @@
 # Change these
-server '54.36.98.168', port: 22, roles: [:app, :db], primary: true
+server '54.36.98.168', port: 22, roles: [:web , :app, :db], primary: true
 
 set :repo_url,        'https://github.com/jmarzin/msm.git'
 set :application,     'msm'
