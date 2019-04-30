@@ -10,7 +10,7 @@
             %li= message
     .field
       = f.label :nom
-      = f.text_field :nom
+      = f.text_field :nom, autofocus: true
     .field
       = f.label :description
       = f.text_area :description, :class => 'tinymce', :rows => 10, :cols => 80, :id => 'mytextarea'
