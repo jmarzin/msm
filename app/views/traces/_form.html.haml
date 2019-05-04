@@ -100,7 +100,7 @@
       = f.label :materiels_ids, 'Matériels emportés'
       %ul.list-unstyled
         = f.collection_check_boxes :materiel_ids,
-          (@trace.materiels + Materiel.where(:reforme => false).order(poids: :desc)).uniq,
+          (@trace.materiels.order(poids: :desc) + Materiel.where(:reforme => false).order(poids: :desc)).uniq,
           :id, :nom_poids_et_reforme do |b|
           %li
             =b.check_box
